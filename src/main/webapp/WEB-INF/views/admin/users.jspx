@@ -13,14 +13,7 @@
     <spring:url value="/admin/users/add" var="add_user" />
     <spring:url value="/admin/role/add" var="add_role" />
     <spring:url value="/admin/users/get" var="get_all_usernames" />
-     <script>
-         jQuery.noConflict();
-         jQuery(function() {
-             jQuery("#samplejquery").autocomplete({
-                 source: "http://localhost:8080/admin/users/get"
-             });
-         });
-     </script>
+
     <div class="row-fluid">
         <c:if test="${user_added == true}">
             <div class="alert alert-success">

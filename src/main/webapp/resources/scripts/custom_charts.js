@@ -142,3 +142,8 @@ $(function () {
         }]
     });
 });
+jQuery(function() {
+    jQuery("#samplejquery").autocomplete({
+        source: "http://localhost:8080/admin/users/get"
+    });
+});
