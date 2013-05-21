@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -56,6 +57,17 @@ public class UserService {
 
     public Long countAll() {
         return userDao.countAll();
+    }
+
+    public boolean userExist(String login) {
+        return userDao.findByUsername(login) == null ? false : true;
+    }
+    public List<String> getAllMachingUsernames(String username, Integer limit){
+        List<String> usernames = new ArrayList<String>();
+        for (User user : userDao.findUsernameByRegex(username,limit)){
+            usernames.add(user.getLogin());
+        }
+        return usernames;
     }
 
     private String getRandomString(int length) {

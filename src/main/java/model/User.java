@@ -1,6 +1,7 @@
 package model;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,19 +14,20 @@ public class User {
     @Id
     private String id;
 
-    @NotEmpty(message="aa")
+    @NotEmpty(message="Not null!")
     private String name;
 
-    @NotEmpty(message="{model.User.surname.NotEmpty}")
+    @NotEmpty(message="Not null!")
     private String surname;
 
-    @NotEmpty(message="{model.User.username.NotEmpty}")
+    @NotEmpty(message="Not null!")
     private String login;
 
-    @NotEmpty(message="{model.User.email.NotEmpty}")
+    @NotEmpty(message="Not null!")
+    @Email(message = "Not valid email")
     private String email;
 
-    @NotEmpty(message="{model.User.password.NotEmpty}")
+    @NotEmpty(message="Not null!")
     private String password;
 
     private Date updatedAt;

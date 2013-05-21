@@ -12,9 +12,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -40,6 +43,13 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             getUsersAttributesWithoutNewUser(model);
             model.addAttribute("fail", true);
+            user.setPassword("");
+            model.addAttribute("user", user);
+            return "users";
+        } else if (userService.userExist(user.getLogin())) {
+            getUsersAttributesWithoutNewUser(model);
+            model.addAttribute("user_exists", true);
+            user.setPassword("");
             model.addAttribute("user", user);
             return "users";
         }
@@ -47,6 +57,12 @@ public class AdminController {
         model.addAttribute("user_added", true);
         getStandardUsersAttributes(model);
         return "users";
+    }
+
+    @RequestMapping(value = "/users/get", params="term", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getUsersLogins(HttpServletRequest request) {
+        return userService.getAllMachingUsernames(request.getParameter("term"), 10);
     }
 
     @RequestMapping(value = "/role/add", method = RequestMethod.POST)

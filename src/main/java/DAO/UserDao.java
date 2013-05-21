@@ -23,6 +23,10 @@ public class UserDao {
         return mongoTemplate.findOne(Query.query(Criteria.where("login").is(username)),User.class);
     }
 
+    public List<User> findUsernameByRegex(String username, int limit){
+        return mongoTemplate.find(Query.query(Criteria.where("login").regex(username)).limit(limit),User.class);
+    }
+
     public List<User> findAll(){
         return mongoTemplate.findAll(User.class);
     }

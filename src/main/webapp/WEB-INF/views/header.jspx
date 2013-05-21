@@ -19,6 +19,7 @@
     <spring:url value="?theme=steal" var="theme_steal"/>
     <spring:url value="/admin/users" var="admin_users"/>
     <spring:url value="/admin/fridges" var="admin_fridges"/>
+    <spring:url value="/" var="home"/>
 
 
 
@@ -26,7 +27,7 @@
         <h3 class="muted"><spring:message code="app_name"/></h3>
         <div class="navbar navbar-inverse">
             <div class="navbar-inner">
-                <a class="brand" href="/"><spring:message code="menu_home"/></a>
+                <a class="brand" href="${home}"><spring:message code="menu_home"/></a>
                 <ul class="nav">
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <li class="dropdown">

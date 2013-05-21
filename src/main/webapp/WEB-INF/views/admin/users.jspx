@@ -12,7 +12,15 @@
     <spring:url value="/user/panel" var="change_data" />
     <spring:url value="/admin/users/add" var="add_user" />
     <spring:url value="/admin/role/add" var="add_role" />
-
+    <spring:url value="/admin/users/get" var="get_all_usernames" />
+     <script>
+         jQuery.noConflict();
+         jQuery(function() {
+             jQuery("#samplejquery").autocomplete({
+                 source: "http://localhost:8080/admin/users/get"
+             });
+         });
+     </script>
     <div class="row-fluid">
         <c:if test="${user_added == true}">
             <div class="alert alert-success">
@@ -35,7 +43,13 @@
                 <spring:message code="menu_admin_error_add"/>
             </div>
         </c:if>
-        <form:errors path="name" class="text-error"/>
+        <c:if test="${user_exists == true}">
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="error"/></h4>
+                <spring:message code="menu_admin_error_user_exists"/>
+            </div>
+        </c:if>
         <ul class="nav nav-pills">
             <li class="active"><a href="#pilsUsers" data-toggle="tab"><spring:message code="menu_admin_users"/></a></li>
             <li><a href="#pilsRoles" data-toggle="tab"><spring:message code="menu_admin_roles"/></a></li>
@@ -120,23 +134,23 @@
                 <div class="control-group">
                     <label class="control-label" for="inputLogin"><spring:message code="panel_user_login"/></label>
                     <div class="controls">
-                        <form:input path="login" type="text" id="inputLogin" value="${user.login}"/>
+                        <form:input path="login" type="text" id="inputLogin" value="${user.login}"/><form:errors path="login" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputName"><spring:message code="panel_user_name"/></label>
                     <div class="controls">
-                        <form:input path="name" type="text" id="inputName" value="${user.name}"/>
+                        <form:input path="name" type="text" id="inputName" value="${user.name}"/> <form:errors path="name" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputSurname"><spring:message code="panel_user_surname"/></label>
                     <div class="controls">
-                        <form:input path="surname" type="text" id="inputSurname" value="${user.surname}"/>
+                        <form:input path="surname" type="text" id="inputSurname" value="${user.surname}"/> <form:errors path="surname" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputEmail"><spring:message code="panel_user_email"/></label>
                     <div class="controls">
-                        <form:input path="email" type="text" id="inputEmail" value="${user.email}"/>
+                        <form:input path="email" type="text" id="inputEmail" value="${user.email}"/>  <form:errors path="email" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputPassword"><spring:message code="panel_user_password"/></label>
                     <div class="controls">
-                        <form:input path="password" type="password" id="inputPassword" placeholder="${panel_typePassword}"/>
+                        <form:input path="password" type="password" id="inputPassword" placeholder="${panel_typePassword}"/> <form:errors path="password" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputPassword"><spring:message code="panel_user_role"/></label>
                     <div class="controls">
@@ -173,7 +187,7 @@
                     </div>
                     <form:label class="control-label" path="name"><spring:message code="menu_admin_role_name"/></form:label>
                     <div class="controls">
-                        <input name="name" type="text" value="${role.name}"/><form:errors path="name" class="text-error"/>
+                        <input id="samplejquery" name="name" type="text" value="${role.name}"/><form:errors path="name" class="text-error"/>
                     </div>
                 </div>
 
