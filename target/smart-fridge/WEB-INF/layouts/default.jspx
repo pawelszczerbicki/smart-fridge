@@ -1,0 +1,54 @@
+<html xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:tiles="http://tiles.apache.org/tags-tiles"
+      xmlns:spring="http://www.springframework.org/tags">
+
+<jsp:output doctype-root-element="HTML" doctype-system="about:legacy-compat" />
+<jsp:directive.page contentType="text/html;charset=UTF-8" session="true" />
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" ><jsp:text/></link>
+    <spring:message code="page_title" var="pageTitle"/>
+
+    <spring:theme code="styleSheet" var="app_css" />
+    <spring:url value="/${app_css}" var="app_css_url" />
+    <spring:url value="/resources/scripts/jquery-ui.js" var="jquery_ui_url" />
+    <spring:url value="/resources/scripts/bootbox.js" var="bootbox_js" />
+    <spring:url value="/resources/bootstrap/js/bootstrap.js" var="bootstrap_js" />
+    <spring:url value="/resources/css/default.css" var="default_css" />
+    <spring:url value="/resources/scripts/highcharts/highcharts.js" var="highCharts" />
+    <spring:url value="/resources/scripts/custom_charts.js" var="charts" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="${app_css_url}" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${default_css}" />
+    <script src="http://code.jquery.com/jquery.js"><jsp:text/></script>
+    <script src="${bootstrap_js}" type="text/javascript"><jsp:text/></script>
+    <script src="${jquery_ui_url}" type="text/javascript"><jsp:text/></script>
+    <script src="${bootbox_js}" type="text/javascript"><jsp:text/></script>
+    <script src="${highCharts}" type="text/javascript"><jsp:text/></script>
+    <script src="${charts}" type="text/javascript"><jsp:text/></script>
+    <!-- Get the user locale from the page context (it was set by Spring MVC's locale
+    resolver) -->
+    <c:set var="userLocale">
+        <c:set var="plocale">${pageContext.response.locale}</c:set>
+        <c:out value="${fn:replace(plocale, '_', '-')}" default="en" />
+    </c:set>
+    <title><spring:message code="page_title"/></title>
+</head>
+
+<body>
+
+<div class="container">
+    <tiles:insertAttribute  name="header"/>
+    <tiles:insertAttribute  name="jumbotron"/>
+    <hr/>
+    <tiles:insertAttribute  name="body"/>
+    <hr/>
+    <tiles:insertAttribute  name="footer"/>
+</div> <!-- /container -->
+</body>
+</html>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="body" xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <spring:message code="panel_typePassword" var="panel_typePassword"/>
+
+    <spring:url value="/user/panel" var="change_data" />
+    <spring:url value="/admin/users/add" var="add_user" />
+    <spring:url value="/admin/role/add" var="add_role" />
+
+    <div class="row-fluid">
+        <c:if test="${user_added == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="menu_admin_success_user_add"/>
+            </div>
+        </c:if>
+        <c:if test="${role_added == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="menu_admin_success_role_add"/>
+            </div>
+        </c:if>
+        <c:if test="${fail == true}">
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="error"/></h4>
+                <spring:message code="menu_admin_error_add"/>
+            </div>
+        </c:if>
+        <form:errors path="name" class="text-error"/>
+        <ul class="nav nav-pills">
+            <li class="active"><a href="#pilsUsers" data-toggle="tab"><spring:message code="menu_admin_users"/></a></li>
+            <li><a href="#pilsRoles" data-toggle="tab"><spring:message code="menu_admin_roles"/></a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="pilsUsers">
+                <h1><span class="label label-info">${usersCount}</span></h1>
+                <table class="table table-hover table-condensed">
+                    <tr>
+                        <td><h4><spring:message code="menu_admin_user_name"/></h4></td>
+                        <td><h4><spring:message code="menu_admin_user_surname"/></h4></td>
+                        <td><h4><spring:message code="menu_admin_user_username"/></h4></td>
+                        <td><h4><spring:message code="menu_admin_user_email"/></h4></td>
+                        <td><h4><spring:message code="menu_admin_user_role"/></h4></td>
+                        <td><h4><spring:message code="menu_admin_user_delete"/></h4></td>
+                        <td><h4><spring:message code="menu_admin_user_isActive"/></h4></td>
+                        <td><h4><spring:message code="menu_admin_user_edit"/></h4></td>
+                    </tr>
+                    <c:forEach var="user" items="${users}" varStatus="status">
+                        <tr>
+
+                            <td>${user.name }</td>
+                            <td>${user.surname}</td>
+                            <td>${user.login}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role.name }</td>
+                            <td> <a id="deleteUserBtn" onclick="deleteUser('${user.login}')" href="javascript:void(0);"><button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button></a></td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${user.active==false }">
+                                        <a id="activateUserButton" onclick="activateUser('${user.login}', 'true')" href="javascript:void(0);"><button class="btn btn-success" type="button">${userActivate }</button></a>
+
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        <a id="activateUserButton" onclick="activateUser('${user.login}', 'false')" href="javascript:void(0);"><button class="btn btn-danger" type="button">${userDisactivate }</button></a>
+
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </td>
+                        </tr>
+
+                    </c:forEach>
+                </table>
+                <div class="text-center">
+                    <a href="#addUserModal" role="button" class="btn btn-large btn-success" data-toggle="modal"><spring:message code="menu_admin_user_add_user"/></a>
+                </div>
+        </div>
+        <div class="tab-pane" id="pilsRoles">
+            <h1><span class="label label-info">${rolesCount}</span></h1>
+            <table class="table table-hover table-condensed">
+                <tr>
+                    <td><h4><spring:message code="menu_admin_role_id"/></h4></td>
+                    <td><h4><spring:message code="menu_admin_role_name"/></h4></td>
+                    <td><h4><spring:message code="button_delete"/></h4></td>
+                </tr>
+                <c:forEach var="role" items="${roles}" varStatus="status">
+                    <tr>
+
+                        <td>${role.id}</td>
+                        <td>${role.name}</td>
+                        <td> <a id="deleteUserBtn" onclick="deleteUser('${user.login}')" href="javascript:void(0);"><button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button></a></td>
+                    </tr>
+
+                </c:forEach>
+            </table>
+            <div class="text-center">
+                <a href="#addRoleModal" role="button" class="btn btn-large btn-success" data-toggle="modal"><spring:message code="menu_admin_user_add_role"/></a>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div id="addUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"><spring:message code="menu_admin_addUser_header"/></h3>
+        </div>
+        <form:form class="form-horizontal" action="${add_user}" method="POST" commandName="user">
+        <div class="modal-body">
+
+                <div class="control-group">
+                    <label class="control-label" for="inputLogin"><spring:message code="panel_user_login"/></label>
+                    <div class="controls">
+                        <form:input path="login" type="text" id="inputLogin" value="${user.login}"/>
+                    </div>
+                    <label class="control-label" for="inputName"><spring:message code="panel_user_name"/></label>
+                    <div class="controls">
+                        <form:input path="name" type="text" id="inputName" value="${user.name}"/>
+                    </div>
+                    <label class="control-label" for="inputSurname"><spring:message code="panel_user_surname"/></label>
+                    <div class="controls">
+                        <form:input path="surname" type="text" id="inputSurname" value="${user.surname}"/>
+                    </div>
+                    <label class="control-label" for="inputEmail"><spring:message code="panel_user_email"/></label>
+                    <div class="controls">
+                        <form:input path="email" type="text" id="inputEmail" value="${user.email}"/>
+                    </div>
+                    <label class="control-label" for="inputPassword"><spring:message code="panel_user_password"/></label>
+                    <div class="controls">
+                        <form:input path="password" type="password" id="inputPassword" placeholder="${panel_typePassword}"/>
+                    </div>
+                    <label class="control-label" for="inputPassword"><spring:message code="panel_user_role"/></label>
+                    <div class="controls">
+                        <form:select path="role.id" name="role">
+                            <c:forEach var="role" items="${roles}" >
+                                <option value="${role.id}">${role.name}</option>
+                            </c:forEach>
+                        </form:select>
+                     </div>
+                </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true"><spring:message code="close"/></button>
+            <button type="submit" class="btn btn-success"><spring:message code="save"/></button>
+
+        </div>
+        </form:form>
+    </div>
+
+    <div id="addRoleModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel"><spring:message code="menu_admin_addUser_header"/></h3>
+        </div>
+        <form:form class="form-horizontal" action="${add_role}" method="POST" commandName="role">
+            <div class="modal-body">
+
+                <div class="control-group">
+                    <form:label class="control-label" path="id"><spring:message code="menu_admin_role_id"/></form:label>
+                    <div class="controls">
+                        <input name="id" type="text" value="${role.id}"/><form:errors path="id" class="text-error"/>
+                    </div>
+                    <form:label class="control-label" path="name"><spring:message code="menu_admin_role_name"/></form:label>
+                    <div class="controls">
+                        <input name="name" type="text" value="${role.name}"/><form:errors path="name" class="text-error"/>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true"><spring:message code="close"/></button>
+                <button type="submit" class="btn btn-success"><spring:message code="save"/></button>
+
+            </div>
+        </form:form>
+    </div>
+</div>
