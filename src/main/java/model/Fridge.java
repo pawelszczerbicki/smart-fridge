@@ -1,7 +1,9 @@
 package model;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Fridge {
@@ -9,11 +11,18 @@ public class Fridge {
     @Id
     private String id;
 
+    @NotEmpty(message = "Not null!")
     private String name;
 
     private List<Product> products;
 
     private List<String> notes;
+
+    public Fridge() {
+        super();
+        products = new ArrayList<Product>();
+        notes = new ArrayList<String>();
+    }
 
     public String getId() {
         return id;

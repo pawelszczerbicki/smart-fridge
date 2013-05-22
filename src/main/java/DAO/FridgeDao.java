@@ -16,4 +16,8 @@ public class FridgeDao {
     public List<Fridge> findAll(){
         return mongoTemplate.findAll(Fridge.class);
     }
+
+    public void save(Fridge fridge){
+        mongoTemplate.save(fridge);
+    }
 }

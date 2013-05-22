@@ -13,7 +13,6 @@ import services.UserAuthentication;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/ws")
@@ -28,8 +27,6 @@ public class WebServiceController {
     @RequestMapping
     @ResponseBody
     public String home(HttpServletRequest request) {
-        StringBuilder builder = new StringBuilder();
-        Map<String, String[]> requestMap = request.getParameterMap();
         Product product = productDao.getProductByWeightId(request.getParameter("id"));
 
         if (product == null)
@@ -40,10 +37,7 @@ public class WebServiceController {
             product.setWeight(Double.parseDouble(request.getParameter("weight")));
         }
         productDao.save(product);
-        for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
-            builder.append(entry.getKey()).append(" = ").append(entry.getValue()[0]).append("; \n");
-        }
-        return builder.toString();
+        return "ok";
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
@@ -68,6 +62,4 @@ public class WebServiceController {
     public String login(@RequestParam("login") String login, @RequestParam("password") String password) {
         return userAuthentication.getSessionIDForUser(login, password);
     }
-
-
 }

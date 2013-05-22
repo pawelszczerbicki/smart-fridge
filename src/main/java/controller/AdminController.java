@@ -59,7 +59,7 @@ public class AdminController {
         return "users";
     }
 
-    @RequestMapping(value = "/users/get", params="term", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/get", params = "term", method = RequestMethod.GET)
     @ResponseBody
     public List<String> getUsersLogins(HttpServletRequest request) {
         return userService.getAllMachingUsernames(request.getParameter("term"), 10);
@@ -80,10 +80,25 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/fridges", method = RequestMethod.GET)
-    public String getFridges(Model model) {
-        model.addAttribute("fridge", new Fridge());
+    public String getFridges(Model model, @Valid @ModelAttribute("fridge") Fridge fridge, BindingResult bindingResult) {
         model.addAttribute("fridges", fridgeDao.findAll());
+        model.addAttribute("fridge", new Fridge());
+        return "fridges";
+    }
 
+    @RequestMapping(value = "/fridges/add", method = RequestMethod.POST)
+    public String addFridge(Model model, @Valid @ModelAttribute("fridge") Fridge fridge, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("fridges", fridgeDao.findAll());
+            model.addAttribute("fridge", fridge);
+            model.addAttribute("fail", true);
+            return "fridges";
+        }
+        fridgeDao.save(fridge);
+        model.addAttribute("fridges", fridgeDao.findAll());
+        model.addAttribute("fridge_added", true);
+        model.addAttribute("fridge", new Fridge());
         return "fridges";
     }
 
