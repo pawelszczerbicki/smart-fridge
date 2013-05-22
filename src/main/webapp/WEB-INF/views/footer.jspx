@@ -9,6 +9,9 @@
     <spring:url value="/resources/img/jquery.png" var="jQueryURL"/>
     <spring:url value="/resources/img/raspberry.png" var="raspberryURL"/>
     <div class="footer">
+        <div class="text-center">
+            <a title="scroll to top" href="#scroll-top">↑</a>
+        </div>
         <p> <spring:message code="footer.proudlyPoweredBy"/></p> <br/>
         <img src="${springURL }" /><img src="${jQueryURL }" /><img src="${mongoDbURL }" /><img src="${raspberryURL }" />
     </div>
