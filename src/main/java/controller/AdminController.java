@@ -1,6 +1,5 @@
 package controller;
 
-import DAO.FridgeDao;
 import DAO.RoleDao;
 import model.Fridge;
 import model.Role;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import services.FridgeService;
 import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +30,7 @@ public class AdminController {
     private RoleDao roleDao;
 
     @Autowired
-    private FridgeDao fridgeDao;
+    private FridgeService fridgeService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String panel(Model model) {
@@ -81,7 +81,7 @@ public class AdminController {
 
     @RequestMapping(value = "/fridges", method = RequestMethod.GET)
     public String getFridges(Model model, @Valid @ModelAttribute("fridge") Fridge fridge, BindingResult bindingResult) {
-        model.addAttribute("fridges", fridgeDao.findAll());
+        model.addAttribute("fridges", fridgeService.findAll());
         model.addAttribute("fridge", new Fridge());
         return "fridges";
     }
@@ -90,13 +90,18 @@ public class AdminController {
     public String addFridge(Model model, @Valid @ModelAttribute("fridge") Fridge fridge, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("fridges", fridgeDao.findAll());
+            model.addAttribute("fridges", fridgeService.findAll());
             model.addAttribute("fridge", fridge);
             model.addAttribute("fail", true);
             return "fridges";
+        } else if (fridgeService.fridgeExist(fridge.getName())) {
+            model.addAttribute("fridges", fridgeService.findAll());
+            model.addAttribute("fridge", fridge);
+            model.addAttribute("fridge_exists", true);
+            return "fridges";
         }
-        fridgeDao.save(fridge);
-        model.addAttribute("fridges", fridgeDao.findAll());
+        fridgeService.save(fridge);
+        model.addAttribute("fridges", fridgeService.findAll());
         model.addAttribute("fridge_added", true);
         model.addAttribute("fridge", new Fridge());
         return "fridges";

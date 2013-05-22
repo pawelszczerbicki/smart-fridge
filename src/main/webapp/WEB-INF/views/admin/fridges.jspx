@@ -30,6 +30,13 @@
                 <spring:message code="menu_admin_error_add"/>
             </div>
         </c:if>
+        <c:if test="${fridge_exists == true}">
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="error"/></h4>
+                <spring:message code="menu_admin_error_fridge_exists"/>
+            </div>
+        </c:if>
 
                 <h1><span class="label label-info">${fn:length(fridges)}</span></h1>
                 <table class="table table-hover table-condensed">
@@ -51,10 +58,10 @@
                     </c:forEach>
                 </table>
                 <div class="text-center">
-                    <a href="#addUserModal" role="button" class="btn btn-large btn-success" data-toggle="modal"><spring:message code="menu_admin_user_add_user"/></a>
+                    <a href="#addFridgeModal" role="button" class="btn btn-large btn-success" data-toggle="modal"><spring:message code="menu_admin_user_add_fridge"/></a>
                 </div>
     </div>
-    <div id="addUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="addFridgeModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"><spring:message code="menu_admin_addUser_header"/></h3>
