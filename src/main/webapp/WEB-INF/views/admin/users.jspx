@@ -13,7 +13,9 @@
     <spring:url value="/admin/users/add" var="add_user" />
     <spring:url value="/admin/role/add" var="add_role" />
     <spring:url value="/admin/users/get" var="get_all_usernames" />
-
+     <script>
+         $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
+     </script>
     <div class="row-fluid">
         <c:if test="${user_added == true}">
             <div class="alert alert-success">
@@ -127,7 +129,7 @@
                 <div class="control-group">
                     <label class="control-label" for="inputLogin"><spring:message code="panel_user_login"/></label>
                     <div class="controls">
-                        <form:input path="login" type="text" id="inputLogin" value="${user.login}"/><form:errors path="login" class="text-error"/>
+                        <form:input path="login" type="text" id="inputLogin" value="${user.login}" /><form:errors path="login" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputName"><spring:message code="panel_user_name"/></label>
                     <div class="controls">
@@ -135,7 +137,9 @@
                     </div>
                     <label class="control-label" for="inputSurname"><spring:message code="panel_user_surname"/></label>
                     <div class="controls">
-                        <form:input path="surname" type="text" id="inputSurname" value="${user.surname}"/> <form:errors path="surname" class="text-error"/>
+                        <form:input path="surname" type="text" id="inputSurname" value="${user.surname}"
+
+                                /> <form:errors path="surname" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputEmail"><spring:message code="panel_user_email"/></label>
                     <div class="controls">
@@ -145,14 +149,22 @@
                     <div class="controls">
                         <form:input path="password" type="password" id="inputPassword" placeholder="${panel_typePassword}"/> <form:errors path="password" class="text-error"/>
                     </div>
-                    <label class="control-label" for="inputPassword"><spring:message code="panel_user_role"/></label>
+                    <label class="control-label" for="inputRole"><spring:message code="panel_user_role"/></label>
                     <div class="controls">
-                        <form:select path="role.id" name="role">
+                        <form:select path="role.id" name="role" id="inputRole">
                             <c:forEach var="role" items="${roles}" >
                                 <option value="${role.id}">${role.name}</option>
                             </c:forEach>
                         </form:select>
                      </div>
+                    <label class="control-label" for="inputRole"><spring:message code="panel_user_fridge"/></label>
+                    <div class="controls">
+                        <form:select path="fridge" name="fridge" id="inputFridge">
+                            <c:forEach var="fridge" items="${fridges}" >
+                                <option value="${fridge.id}">${fridge.name}</option>
+                            </c:forEach>
+                        </form:select>
+                    </div>
                 </div>
 
 

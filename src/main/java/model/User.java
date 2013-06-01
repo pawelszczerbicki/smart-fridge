@@ -8,26 +8,26 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
 
-@Document(collection="users")
+@Document(collection = "users")
 public class User {
 
     @Id
     private String id;
 
-    @NotEmpty(message="Not null!")
+    @NotEmpty(message = "Not null!")
     private String name;
 
-    @NotEmpty(message="Not null!")
+    @NotEmpty(message = "Not null!")
     private String surname;
 
-    @NotEmpty(message="Not null!")
+    @NotEmpty(message = "Not null!")
     private String login;
 
-    @NotEmpty(message="Not null!")
+    @NotEmpty(message = "Not null!")
     @Email(message = "Not valid email")
     private String email;
 
-    @NotEmpty(message="Not null!")
+    @NotEmpty(message = "Not null!")
     private String password;
 
     private Date updatedAt;
@@ -38,12 +38,14 @@ public class User {
 
     private Role role;
 
+    private String fridge;
+
     private boolean active;
 
     public User() {
         super();
-        active=true;
-        role=new Role();
+        active = true;
+        role = new Role();
     }
 
     public String getId() {
@@ -132,6 +134,14 @@ public class User {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getFridge() {
+        return fridge;
+    }
+
+    public void setFridge(String fridge) {
+        this.fridge = fridge;
     }
 
     @Override

@@ -124,6 +124,7 @@ public class AdminController {
     private void getAttributes(Model model, boolean user, boolean role) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("usersCount", userService.countAll());
+        model.addAttribute("fridges", fridgeService.findAll());
         if (user)
             model.addAttribute("user", new User());
         model.addAttribute("roles", roleDao.findAll());

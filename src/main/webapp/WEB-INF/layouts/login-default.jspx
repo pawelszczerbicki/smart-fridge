@@ -15,6 +15,8 @@
     <spring:url value="/resources/scripts/bootbox.js" var="bootbox_js" />
     <spring:url value="/resources/bootstrap/js/bootstrap.js" var="bootstrap_js" />
     <spring:url value="/resources/css/login.css" var="login_css" />
+    <spring:url value="/resources/scripts/fridge.js" var="fridge" />
+    <spring:url value="/resources/scripts/jqBootstrapValidation.js" var="bootstrap_validation" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="${app_css_url}" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
@@ -23,6 +25,8 @@
     <script src="${bootstrap_js}" type="text/javascript"><jsp:text/></script>
     <script src="${jquery_ui_url}" type="text/javascript"><jsp:text/></script>
     <script src="${bootbox_js}" type="text/javascript"><jsp:text/></script>
+    <script src="${fridge}" type="text/javascript"><jsp:text/></script>
+    <script src="${bootstrap_validation}" type="text/javascript"><jsp:text/></script>
     <!-- Get the user locale from the page context (it was set by Spring MVC's locale
     resolver) -->
     <c:set var="userLocale">

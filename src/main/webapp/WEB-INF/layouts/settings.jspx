@@ -22,6 +22,7 @@
     <spring:url value="/resources/scripts/highcharts/highcharts.js" var="highCharts" />
     <spring:url value="/resources/scripts/custom_charts.js" var="charts" />
     <spring:url value="/resources/scripts/fridge.js" var="fridge" />
+    <spring:url value="/resources/scripts/jqBootstrapValidation.js" var="bootstrap_validation" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="${app_css_url}" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
@@ -33,6 +34,7 @@
     <script src="${highCharts}" type="text/javascript"><jsp:text/></script>
     <script src="${charts}" type="text/javascript"><jsp:text/></script>
     <script src="${fridge}" type="text/javascript"><jsp:text/></script>
+    <script src="${bootstrap_validation}" type="text/javascript"><jsp:text/></script>
     <!-- Get the user locale from the page context (it was set by Spring MVC's locale
     resolver) -->
     <c:set var="userLocale">
