@@ -1,6 +1,5 @@
 package controller;
 
-import DAO.UserDao;
 import model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,11 @@ import java.util.Map;
 public class UserActionController {
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/restorePassword", method = RequestMethod.POST)
     public String restorePassword(@RequestParam("username") String username, Model model) {
-        User user = userDao.findByUsername(username);
+        User user = userService.findByUsername(username);
         Map<String, Boolean> paramsMap = new HashMap<String, Boolean>();
 
 
@@ -46,7 +42,7 @@ public class UserActionController {
     }
     @RequestMapping(value = "/panel", method = RequestMethod.GET)
     public String panel(Model model, Principal principal) {
-        User user = userDao.findByUsername(principal.getName());
+        User user = userService.findByUsername(principal.getName());
         user.setPassword("");
         model.addAttribute("user", user);
 
@@ -54,14 +50,14 @@ public class UserActionController {
     }
     @RequestMapping(value = "/panel", method = RequestMethod.POST)
     public String changeData(Model model, @ModelAttribute("user") User newUser) {
-        User user = userDao.findById(newUser.getId());
+        User user = userService.findById(newUser.getId());
         String newPassword = newUser.getPassword()== null || newUser.getPassword().trim() == "" ? user.getPassword(): DigestUtils.md5Hex(newUser.getPassword());
         user.setPassword(newPassword);
         user.setEmail(newUser.getEmail());
         user.setName(newUser.getName());
         user.setSurname(newUser.getSurname());
         user.setUpdatedAt(new Date());
-        userDao.save(user);
+        userService.save(user);
         user.setPassword("");
         model.addAttribute("user", user);
         model.addAttribute("modified", true);

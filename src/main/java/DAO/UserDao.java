@@ -38,4 +38,7 @@ public class UserDao {
     public void save(User user){
         mongoTemplate.save(user);
     }
+    public void remove(User user){
+        mongoTemplate.remove(user);
+    }
 }

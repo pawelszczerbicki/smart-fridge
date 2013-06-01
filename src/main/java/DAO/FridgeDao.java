@@ -15,15 +15,23 @@ public class FridgeDao {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    public List<Fridge> findAll(){
+    public List<Fridge> findAll() {
         return mongoTemplate.findAll(Fridge.class);
     }
 
-    public void save(Fridge fridge){
+    public void save(Fridge fridge) {
         mongoTemplate.save(fridge);
     }
 
-    public Fridge findByName(String name){
+    public Fridge findByName(String name) {
         return mongoTemplate.findOne(Query.query(Criteria.where("name").is(name)), Fridge.class);
+    }
+
+    public Fridge findById(String id) {
+        return mongoTemplate.findById(id, Fridge.class);
+    }
+
+    public void remove(Fridge fridge) {
+        mongoTemplate.remove(fridge);
     }
 }

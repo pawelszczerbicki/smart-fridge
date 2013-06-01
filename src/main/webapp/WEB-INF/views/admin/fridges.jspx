@@ -8,12 +8,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
 
-    <spring:message code="panel_typePassword" var="panel_typePassword"/>
-
-    <spring:url value="/user/panel" var="change_data" />
-    <spring:url value="/admin/users/add" var="add_user" />
-    <spring:url value="/admin/role/add" var="add_role" />
-    <spring:url value="/admin/fridges/add" var="add_fridge" />
+    <spring:url value="/admin/fridges/delete/" var="delete_fridge"/>
+    <spring:url value="/admin/fridges/add" var="add_fridge"/>
 
     <div class="row-fluid">
         <c:if test="${fridge_added == true}">
@@ -37,31 +33,41 @@
                 <spring:message code="menu_admin_error_fridge_exists"/>
             </div>
         </c:if>
+        <c:if test="${fridge_removed == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="menu_admin_error_fridge_removed"/>
+            </div>
+        </c:if>
+        <h1><span class="label label-info">${fn:length(fridges)}</span></h1>
+        <table class="table table-hover table-condensed">
+            <tr>
+                <td><h4><spring:message code="menu_admin_fridge_name"/></h4></td>
+                <td><h4><spring:message code="menu_admin_fridge_notes"/></h4></td>
+                <td><h4><spring:message code="menu_admin_fridge_products"/></h4></td>
+                <td><h4><spring:message code="button_delete"/></h4></td>
 
-                <h1><span class="label label-info">${fn:length(fridges)}</span></h1>
-                <table class="table table-hover table-condensed">
-                    <tr>
-                        <td><h4><spring:message code="menu_admin_fridge_name"/></h4></td>
-                        <td><h4><spring:message code="menu_admin_fridge_notes"/></h4></td>
-                        <td><h4><spring:message code="menu_admin_fridge_products"/></h4></td>
-                        <td><h4><spring:message code="button_delete"/></h4></td>
+            </tr>
+            <c:forEach var="fridge" items="${fridges}" varStatus="status">
+                <tr>
 
-                    </tr>
-                    <c:forEach var="fridge" items="${fridges}" varStatus="status">
-                        <tr>
-
-                            <td>${fridge.name}</td>
-                            <td>${fn:length(fridge.notes)}</td>
-                            <td>${fn:length(fridge.products)}</td>
-                            <td> <a id="deleteUserBtn" onclick="deleteUser('${user.login}')" href="javascript:void(0);"><button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button></a></td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <div class="text-center">
-                    <a href="#addFridgeModal" role="button" class="btn btn-large btn-success" data-toggle="modal"><spring:message code="menu_admin_user_add_fridge"/></a>
-                </div>
+                    <td>${fridge.name}</td>
+                    <td>${fn:length(fridge.notes)}</td>
+                    <td>${fn:length(fridge.products)}</td>
+                    <td><a id="deleteUserBtn" href="${delete_fridge}${fridge.id}">
+                        <button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button>
+                    </a></td>
+                </tr>
+            </c:forEach>
+        </table>
+        <div class="text-center">
+            <a href="#addFridgeModal" role="button" class="btn btn-large btn-success"
+               data-toggle="modal"><spring:message code="menu_admin_user_add_fridge"/></a>
+        </div>
     </div>
-    <div id="addFridgeModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="addFridgeModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel"><spring:message code="menu_admin_addUser_header"/></h3>
@@ -70,9 +76,12 @@
             <div class="modal-body">
 
                 <div class="control-group">
-                    <label class="control-label" for="inputFridgeName"><spring:message code="panel_fridge_name"/></label>
+                    <label class="control-label" for="inputFridgeName"><spring:message
+                            code="panel_fridge_name"/></label>
+
                     <div class="controls">
-                        <form:input path="name" type="text" id="inputFridgeName" value="${fridge.name}"/><form:errors path="name" class="text-error"/>
+                        <form:input path="name" type="text" id="inputFridgeName" value="${fridge.name}"/><form:errors
+                            path="name" class="text-error"/>
                     </div>
                 </div>
 

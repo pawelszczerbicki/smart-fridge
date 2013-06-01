@@ -13,6 +13,10 @@
     <spring:url value="/admin/users/add" var="add_user" />
     <spring:url value="/admin/role/add" var="add_role" />
     <spring:url value="/admin/users/get" var="get_all_usernames" />
+    <spring:url value="/admin/users/delete/" var="delete_user" />
+    <spring:url value="/admin/users/deactivate/" var="deactivate_user" />
+    <spring:url value="/admin/users/activate/" var="activate_user" />
+    <spring:url value="/admin/role/delete/" var="delete_role" />
      <script>
          $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
      </script>
@@ -45,6 +49,34 @@
                 <spring:message code="menu_admin_error_user_exists"/>
             </div>
         </c:if>
+        <c:if test="${user_removed == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="menu_admin_success_user_removed"/>
+            </div>
+        </c:if>
+        <c:if test="${user_activated == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="menu_admin_success_user_activated"/>
+            </div>
+        </c:if>
+        <c:if test="${user_deactivated == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="menu_admin_success_user_deactivated"/>
+            </div>
+        </c:if>
+        <c:if test="${role_removed == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="menu_admin_success_role_removed"/>
+            </div>
+        </c:if>
         <ul class="nav nav-pills">
             <li class="active"><a href="#pilsUsers" data-toggle="tab"><spring:message code="menu_admin_users"/></a></li>
             <li><a href="#pilsRoles" data-toggle="tab"><spring:message code="menu_admin_roles"/></a></li>
@@ -71,21 +103,21 @@
                             <td>${user.login}</td>
                             <td>${user.email}</td>
                             <td>${user.role.name }</td>
-                            <td> <a id="deleteUserBtn" onclick="deleteUser('${user.login}')" href="javascript:void(0);"><button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button></a></td>
+                            <td> <a id="deleteUserBtn" href="${delete_user}${user.id}"><button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button></a></td>
                             <td>
                                 <c:choose>
                                     <c:when test="${user.active==false }">
-                                        <a id="activateUserButton" onclick="activateUser('${user.login}', 'true')" href="javascript:void(0);"><button class="btn btn-success" type="button">${userActivate }</button></a>
+                                        <a id="activateUserButton"  href="${activate_user}${user.id}"><button class="btn btn-success" type="button"><spring:message code="menu_admin_user_activate"/></button></a>
 
                                     </c:when>
 
                                     <c:otherwise>
-                                        <a id="activateUserButton" onclick="activateUser('${user.login}', 'false')" href="javascript:void(0);"><button class="btn btn-danger" type="button">${userDisactivate }</button></a>
+                                        <a id="activateUserButton" href="${deactivate_user}${user.id}"><button class="btn btn-danger" type="button"><spring:message code="menu_admin_user_deactivate"/></button></a>
 
                                     </c:otherwise>
                                 </c:choose>
-
                             </td>
+                            <td><i class="icon-edit"><jsp:text/></i></td>
                         </tr>
 
                     </c:forEach>
@@ -107,7 +139,7 @@
 
                         <td>${role.id}</td>
                         <td>${role.name}</td>
-                        <td> <a id="deleteUserBtn" onclick="deleteUser('${user.login}')" href="javascript:void(0);"><button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button></a></td>
+                        <td> <a id="deleteUserBtn" href="${delete_role}${role.id}"><button class="btn btn-danger" type="button"><spring:message code="button_delete"/></button></a></td>
                     </tr>
 
                 </c:forEach>

@@ -24,4 +24,8 @@ public class FridgeService {
     public void save(Fridge fridge){
         fridgeDao.save(fridge);
     }
+
+    public void remove(String id){
+        fridgeDao.remove(fridgeDao.findById(id));
+    }
 }

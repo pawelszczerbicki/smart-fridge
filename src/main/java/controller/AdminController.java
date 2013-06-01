@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import services.FridgeService;
 import services.UserService;
 
@@ -65,6 +62,38 @@ public class AdminController {
         return userService.getAllMachingUsernames(request.getParameter("term"), 10);
     }
 
+    @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.GET)
+    public String deleteUser(Model model, @PathVariable String id) {
+        userService.remove(id);
+        model.addAttribute("user_removed", true);
+        getStandardUsersAttributes(model);
+        return "users";
+    }
+
+    @RequestMapping(value = "/users/deactivate/{id}", method = RequestMethod.GET)
+    public String deactivateUser(Model model, @PathVariable String id) {
+        userService.userActivation(id, false);
+        model.addAttribute("user_deactivated", true);
+        getStandardUsersAttributes(model);
+        return "users";
+    }
+
+    @RequestMapping(value = "/users/activate/{id}", method = RequestMethod.GET)
+    public String activateUser(Model model, @PathVariable String id) {
+        userService.userActivation(id, true);
+        model.addAttribute("user_activated", true);
+        getStandardUsersAttributes(model);
+        return "users";
+    }
+
+    @RequestMapping(value = "/users/edit/{id}", method = RequestMethod.GET)
+    public String editUserPanel(Model model, @PathVariable String id) {
+        User user = userService.findById(id);
+        user.setPassword("");
+        model.addAttribute("user", userService.findById(id));
+        return "edit";
+    }
+
     @RequestMapping(value = "/role/add", method = RequestMethod.POST)
     public String addRole(Model model, @Valid @ModelAttribute("role") Role role, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -79,8 +108,16 @@ public class AdminController {
         return "users";
     }
 
+    @RequestMapping(value = "/role/delete/{id}", method = RequestMethod.GET)
+    public String deleteRole(Model model, @PathVariable Integer id) {
+        roleDao.remove(roleDao.findById(id));
+        getStandardUsersAttributes(model);
+        model.addAttribute("role_removed", true);
+        return "users";
+    }
+
     @RequestMapping(value = "/fridges", method = RequestMethod.GET)
-    public String getFridges(Model model, @Valid @ModelAttribute("fridge") Fridge fridge, BindingResult bindingResult) {
+    public String getFridges(Model model) {
         model.addAttribute("fridges", fridgeService.findAll());
         model.addAttribute("fridge", new Fridge());
         return "fridges";
@@ -88,22 +125,26 @@ public class AdminController {
 
     @RequestMapping(value = "/fridges/add", method = RequestMethod.POST)
     public String addFridge(Model model, @Valid @ModelAttribute("fridge") Fridge fridge, BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
-            model.addAttribute("fridges", fridgeService.findAll());
-            model.addAttribute("fridge", fridge);
+            getStandardFridgeAttributes(model, fridge);
             model.addAttribute("fail", true);
             return "fridges";
         } else if (fridgeService.fridgeExist(fridge.getName())) {
-            model.addAttribute("fridges", fridgeService.findAll());
-            model.addAttribute("fridge", fridge);
+            getStandardFridgeAttributes(model, fridge);
             model.addAttribute("fridge_exists", true);
             return "fridges";
         }
         fridgeService.save(fridge);
-        model.addAttribute("fridges", fridgeService.findAll());
         model.addAttribute("fridge_added", true);
-        model.addAttribute("fridge", new Fridge());
+        getStandardFridgeAttributes(model, fridge);
+        return "fridges";
+    }
+
+    @RequestMapping(value = "/fridges/delete/{id}", method = RequestMethod.GET)
+    public String deleteFridge(Model model, @PathVariable String id) {
+        fridgeService.remove(id);
+        getStandardFridgeAttributes(model, new Fridge());
+        model.addAttribute("fridge_removed", true);
         return "fridges";
     }
 
@@ -119,6 +160,12 @@ public class AdminController {
 
     private void getUsersAttributesWithoutNewUser(Model model) {
         getAttributes(model, false, true);
+    }
+
+    private void getStandardFridgeAttributes(Model model, Fridge fridge) {
+        model.addAttribute("fridges", fridgeService.findAll());
+        model.addAttribute("fridge", fridge);
+
     }
 
     private void getAttributes(Model model, boolean user, boolean role) {

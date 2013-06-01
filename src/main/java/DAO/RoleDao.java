@@ -29,4 +29,8 @@ public class RoleDao {
     public Long countAll() {
         return mongoTemplate.count(new Query(), Role.class);
     }
+
+    public void remove(Role role){
+        mongoTemplate.remove(role);
+    }
 }
