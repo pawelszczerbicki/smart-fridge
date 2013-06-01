@@ -17,6 +17,8 @@
     <spring:url value="/admin/users/deactivate/" var="deactivate_user" />
     <spring:url value="/admin/users/activate/" var="activate_user" />
     <spring:url value="/admin/role/delete/" var="delete_role" />
+    <spring:url value="/admin/users/edit/" var="edit_user" />
+
      <script>
          $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
      </script>
@@ -117,7 +119,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </td>
-                            <td><i class="icon-edit"><jsp:text/></i></td>
+                            <td><a href="${edit_user}${user.id}"><i class="icon-edit"><jsp:text/></i></a></td>
                         </tr>
 
                     </c:forEach>
@@ -169,9 +171,7 @@
                     </div>
                     <label class="control-label" for="inputSurname"><spring:message code="panel_user_surname"/></label>
                     <div class="controls">
-                        <form:input path="surname" type="text" id="inputSurname" value="${user.surname}"
-
-                                /> <form:errors path="surname" class="text-error"/>
+                        <form:input path="surname" type="text" id="inputSurname" value="${user.surname}"/> <form:errors path="surname" class="text-error"/>
                     </div>
                     <label class="control-label" for="inputEmail"><spring:message code="panel_user_email"/></label>
                     <div class="controls">

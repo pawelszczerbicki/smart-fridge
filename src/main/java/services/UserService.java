@@ -25,17 +25,25 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
-    private String emailContent = "Your new password to fridge: ";
+    private String emailContentSuccess = "Your new password to fridge: ";
+
+    private String emailContentFail = "Your account is not active. Contact your administrator";
 
     private String emailSubject = "Smart fRidge - new password";
 
     private static final Logger logger = Logger.getLogger(UserAuthentication.class);
 
     public boolean restoreUserPassword(User user) {
+
         String newPassword = getRandomString(10);
         user.setPassword(DigestUtils.md5Hex(newPassword));
         try {
-            emailService.sendEmail(new Email(emailSubject, emailContent + newPassword, user.getEmail()));
+            if (user.isActive()) {
+                emailService.sendEmail(new Email(emailSubject, emailContentSuccess + newPassword, user.getEmail()));
+            } else {
+                emailService.sendEmail(new Email(emailSubject, emailContentFail, user.getEmail()));
+                return true;
+            }
         } catch (Exception e) {
             logger.error("Error sending message", e);
             return false;
@@ -82,6 +90,16 @@ public class UserService {
         User user = userDao.findById(id);
         user.setActive(active);
         userDao.save(user);
+    }
+
+    public void editUserByAdmin(User oldUser, User editedUser) {
+        oldUser.setLogin(editedUser.getLogin());
+        oldUser.setRole(roleDao.findById(editedUser.getRole().getId()));
+        oldUser.setFridge(editedUser.getFridge());
+        oldUser.setName(editedUser.getName());
+        oldUser.setSurname(editedUser.getSurname());
+        oldUser.setEmail(editedUser.getEmail());
+        userDao.save(oldUser);
     }
 
     public List<String> getAllMachingUsernames(String username, Integer limit) {

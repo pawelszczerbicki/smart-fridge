@@ -8,4 +8,7 @@
     <definition extends="settings" name="fridges">
         <put-attribute name="body" value="/WEB-INF/views/admin/fridges.jspx" />
     </definition>
+    <definition extends="settings" name="edit">
+        <put-attribute name="body" value="/WEB-INF/views/admin/editUser.jspx" />
+    </definition>
 </tiles-definitions>

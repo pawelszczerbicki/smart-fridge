@@ -89,8 +89,24 @@ public class AdminController {
     @RequestMapping(value = "/users/edit/{id}", method = RequestMethod.GET)
     public String editUserPanel(Model model, @PathVariable String id) {
         User user = userService.findById(id);
-        user.setPassword("");
-        model.addAttribute("user", userService.findById(id));
+        user.setPassword("hidden");
+        getStandardEditedUserParameters(model, userService.findById(id));
+        return "edit";
+    }
+
+    @RequestMapping(value = "/users/edit", method = RequestMethod.POST)
+    public String editUser(Model model, @ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        User oldUser = userService.findById(user.getId());
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("fail", true);
+        } else if (userService.findByUsername(user.getLogin()) != null && !oldUser.getLogin().equals(user.getLogin())) {
+            model.addAttribute("user_exist", true);
+        } else {
+            userService.editUserByAdmin(oldUser, user);
+            model.addAttribute("user_edited", true);
+        }
+        getStandardEditedUserParameters(model, user);
         return "edit";
     }
 
@@ -150,7 +166,6 @@ public class AdminController {
 
 
     private void getStandardUsersAttributes(Model model) {
-
         getAttributes(model, true, true);
     }
 
@@ -166,6 +181,12 @@ public class AdminController {
         model.addAttribute("fridges", fridgeService.findAll());
         model.addAttribute("fridge", fridge);
 
+    }
+
+    private void getStandardEditedUserParameters(Model model, User user) {
+        model.addAttribute("roles", roleDao.findAll());
+        model.addAttribute("fridges", fridgeService.findAll());
+        model.addAttribute("user", user);
     }
 
     private void getAttributes(Model model, boolean user, boolean role) {
