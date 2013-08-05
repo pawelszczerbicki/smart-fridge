@@ -24,7 +24,7 @@
 
     <resources location="/resources/" mapping="/resources/**"/>
     <default-servlet-handler/>
-    <context:component-scan base-package="controller" />
+    <context:component-scan base-package="controller, JavaXMLTask" />
 
     <interceptors>
         <beans:bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" p:paramName="theme"/>
@@ -55,5 +55,8 @@
         </beans:property>
     </beans:bean>
     <task:annotation-driven />
+    <beans:bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
 
 </beans:beans>

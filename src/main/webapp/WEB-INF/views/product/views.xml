@@ -2,10 +2,13 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration
 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-    <definition extends="default" name="index">
+    <definition extends="settings" name="details">
+        <put-attribute name="body" value="/WEB-INF/views/product/details.jspx" />
+    </definition>
+    <definition extends="settings" name="hidden">
         <put-attribute name="body" value="/WEB-INF/views/index.jspx" />
     </definition>
-    <definition extends="settings" name="accessDenied">
-        <put-attribute name="body" value="/WEB-INF/views/accessDenied.jspx" />
+    <definition extends="settings" name="edit_product">
+        <put-attribute name="body" value="/WEB-INF/views/product/editProduct.jspx" />
     </definition>
 </tiles-definitions>

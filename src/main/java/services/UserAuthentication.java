@@ -59,7 +59,7 @@ public class UserAuthentication implements UserDetailsService {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.MINUTE, -30);
         User user = mongoTemplate.findOne(new Query(Criteria.where("sessionCode").is(sessionId)), User.class);
-        if (user.getCodeUpdatedAt().compareTo(now.getTime()) > 0) {
+        if (user != null && user.getCodeUpdatedAt().compareTo(now.getTime()) > 0) {
             user.setCodeUpdatedAt(new Date());
             mongoTemplate.save(user);
             return true;

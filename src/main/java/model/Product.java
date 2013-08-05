@@ -3,10 +3,9 @@ package model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.awt.image.BufferedImage;
 import java.util.Date;
 
-@Document(collection="products")
+@Document(collection = "products")
 public class Product {
 
     @Id
@@ -15,6 +14,8 @@ public class Product {
     private String weightId;
 
     private String name;
+
+    private String description;
 
     private String visibleName;
 
@@ -30,15 +31,27 @@ public class Product {
 
     private Double maxWeight;
 
-    private BufferedImage image;
+    private byte[] image;
+
+    private boolean active;
 
     public Product() {
-       super();
+        super();
+        active = true;
     }
 
-    public Product(String id, Double weight) {
-        this.id = id;
+    public Product(String weightId, Double weight) {
+        active = true;
+        this.weightId = weightId;
         this.weight = weight;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getId() {
@@ -121,12 +134,20 @@ public class Product {
         this.maxWeight = maxWeight;
     }
 
-    public BufferedImage getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(BufferedImage image) {
+    public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

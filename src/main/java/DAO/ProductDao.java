@@ -19,10 +19,12 @@ public class ProductDao {
         return mongoTemplate.findAll(Product.class);
     }
 
+    public List<Product> getActiveProductList(Query query) {
+        return mongoTemplate.find(query,Product.class);
+    }
+
     public Product getProductById(String id) {
-        Product product = mongoTemplate.findById(id, Product.class);
-        product.getId();
-        return  product;
+        return mongoTemplate.findById(id, Product.class);
     }
 
     public Product getProductByName(String name) {
@@ -38,5 +40,8 @@ public class ProductDao {
     }
     public void save(Product product) {
         mongoTemplate.save(product);
+    }
+    public List<Product> getProductByQuery(Query q){
+        return mongoTemplate.find(q,Product.class);
     }
 }

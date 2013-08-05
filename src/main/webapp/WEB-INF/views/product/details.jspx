@@ -1,13 +1,110 @@
-<!--
-  Created by IntelliJ IDEA.
-  User: Pawel
-  Date: 01.06.13
-  Time: 23:42
-  To change this template use File | Settings | File Templates.
--->
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns="http://www.w3.org/1999/xhtml" version="2.0">
-    <html>
-    <head><title>Simple jspx page</title></head>
-    <body>Place content here</body>
-    </html>
-</jsp:root>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="body" xmlns:jsp="http://java.sun.com/JSP/Page"
+     version="2.0" xmlns:spring="http://www.springframework.org/tags" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <spring:url value="/product/delete" var="delete_product"/>
+    <spring:url value="/product/activate" var="activate_product"/>
+    <spring:url value="/product/getImage/${product.id}" var="get_image"/>
+    <spring:url value="/resources/img/no_photo.jpg" var="no_photo_img"/>
+
+    <div>
+        <c:if test="${activated == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="product_details_activated"/>
+            </div>
+        </c:if>
+        <c:if test="${activated == false}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                <spring:message code="product_details_deactivated"/>
+            </div>
+        </c:if>
+        <div class="featurette">
+
+
+            <c:choose>
+                <c:when test="${product.image==null}">
+                    <img src="${no_photo_img}" alt=""/>
+                </c:when>
+                <c:otherwise>
+                    <img src="${get_image}" width="250" class="img-rounded pull-right"/>
+                </c:otherwise>
+            </c:choose>
+
+            <h2 class="featurette-heading">
+                <spring:message code="product_details_your_product"/> ${product.visibleName}   <br/>
+                <span class="muted"><spring:message code="product_details_amount"/> ${product.weight}<spring:message
+                        code="product_unit"/></span>
+            </h2>
+
+            <p class="lead">${product.description} <br/>
+                 <br/>
+                <br/>
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt><spring:message code="product_details_id"/></dt>
+                        <dd>${product.id},</dd>
+
+                        <dt><spring:message code="product_details_name"/></dt>
+                        <dd>${product.name},</dd>
+
+                        <dt><spring:message code="product_details_visibleName"/></dt>
+                        <dd>${product.visibleName},</dd>
+
+                        <dt><spring:message code="product_details_weight"/></dt>
+                        <dd>${product.weight},</dd>
+
+                        <dt><spring:message code="product_details_lastWeight"/></dt>
+                        <dd>${product.lastWeight},</dd>
+
+                        <dt><spring:message code="product_details_price"/></dt>
+                        <dd>${product.price},</dd>
+
+                        <dt><spring:message code="product_details_tolerance"/></dt>
+                        <dd>${product.tolerance},</dd>
+
+                        <dt><spring:message code="product_details_lastWeightChange"/></dt>
+                        <dd>${product.lastWeightChange},</dd>
+
+                        <dt><spring:message code="product_details_maxWeight"/></dt>
+                        <dd>${product.maxWeight},</dd>
+                    </dl>
+                </div>
+            </p>
+            <div class="text-center btn-toolbar">
+                <form style="display: inline" action="${delete_product}" method="POST">
+                    <input type="hidden" name="id" value="${product.id}"/>
+                    <button type="submit" class="btn btn-large btn-danger"><spring:message
+                            code="product_details_delete"/></button>
+                </form>
+
+                <c:choose>
+                    <c:when test="${product.active==true }">
+                        <form style="display: inline; padding-left: 10px" action="${activate_product}" method="POST">
+                            <input type="hidden" name="id" value="${product.id}"/>
+                            <input type="hidden" name="active" value="false"/>
+                            <button type="submit" class="btn btn-large btn-danger"><spring:message
+                                    code="product_details_deactivate"/></button>
+                        </form>
+                    </c:when>
+
+                    <c:otherwise>
+                        <form style="display: inline; padding-left: 10px" action="${activate_product}" method="POST">
+                            <input type="hidden" name="id" value="${product.id}"/>
+                            <input type="hidden" name="active" value="true"/>
+                            <button type="submit" class="btn btn-large btn-success"><spring:message
+                                    code="product_details_activate"/></button>
+                        </form>
+                    </c:otherwise>
+                </c:choose>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>

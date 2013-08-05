@@ -15,6 +15,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <http pattern="/login*" security="none"/>
     <http pattern="/user/restorePassword*" security="none"/>
     <http pattern="/ws/**" security="none"/>
+    <http pattern="/tasks/**" security="none"/>
 
     <global-method-security pre-post-annotations="enabled"/>
 

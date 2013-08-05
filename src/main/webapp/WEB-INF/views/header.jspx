@@ -20,6 +20,7 @@
     <spring:url value="/admin/users" var="admin_users"/>
     <spring:url value="/admin/fridges" var="admin_fridges"/>
     <spring:url value="/" var="home"/>
+    <spring:url value="/product/deactivated" var="deactivated_products"/>
 
 
 
@@ -38,7 +39,12 @@
                             </ul>
                         </li>
                     </sec:authorize>
-                    <li><a href="#"><spring:message code="menu_user"/></a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="menu_user"/></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li><a href="${deactivated_products}"><spring:message code="menu_user_show_hidden_products"/></a></li>
+                        </ul>
+                    </li>
                     <li><a href="#"><spring:message code="menu_download"/></a></li>
                     <li><a href="#aboutModal" role="button" data-toggle="modal"><spring:message code="menu_about"/></a></li>
 

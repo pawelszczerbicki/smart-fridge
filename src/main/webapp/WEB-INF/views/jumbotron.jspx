@@ -9,13 +9,21 @@
 
         <ul class="nav nav-pills">
             <li class="active"><a href="#realTime" data-toggle="tab"><spring:message code="jumbotron.realTimeChart"/></a></li>
-            <li><a href="#pieChart" data-toggle="tab"><spring:message code="jumbotron.piechart"/></a></li>
+            <li><a href="#pieChartPane" data-toggle="tab"><spring:message code="jumbotron.piechart"/></a></li>
             <li><a href="#cameraLive" data-toggle="tab"><spring:message code="jumbotron.liveCameraView"/></a></li>
         </ul>
-        <div class="tab-content text-center">
-            <div class="tab-pane active text-center" id="realTime"><div class="text-center"><div class="text-center" id="realTimeChart"><jsp:text/></div></div></div>
-            <div class="tab-pane text-center" id="pieChart"><div class="text-center"><div class="text-center" id="pieChart"><jsp:text/></div></div></div>
-            <div class="tab-pane text-center" id="cameraLive"><div class="text-center"><spring:message code="jumbotron.waitingForCamera"/><jsp:text/></div></div>
+        <div class="tab-content">
+            <div class="tab-pane active text-center" id="realTime">
+                <div class="span9">
+                    <div class="text-center" id="realTimeChart"><jsp:text/></div>
+                </div>
+            </div>
+            <div class="tab-pane text-center" id="pieChartPane">
+                <div class="span9">
+                    <div class="text-center" style="min-width: 800px; height: 400px; margin: 0 auto; text-align: center; float: none" id="pieChart"><jsp:text/></div>
+                </div>
+            </div>
+            <div class="tab-pane text-center" id="cameraLive"><spring:message code="jumbotron.waitingForCamera"/><jsp:text/></div>
         </div>
 
     </div>

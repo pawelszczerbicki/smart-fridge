@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div id="body" xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form"
+     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:x="http://java.sun.com/jsp/jstl/xml"
+     version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <spring:message code="host_name_open" var="open_host"/>
+    <spring:message code="host_name_close" var="close_host"/>
+    <spring:message code="host_ip_open" var="ipopen"/>
+    <spring:message code="host_ip_close" var="ipclose"/>
+    <spring:message code="hosts_close" var="hostsclose"/>
+    <spring:message code="host_name_close2" var="hostnameclose2"/>
+    <spring:message code="hosts_open" var="hostsopen"/>
+
+    <spring:url value="/admin/fridges/delete/" var="delete_fridge"/>
+    <spring:url value="/admin/fridges/add" var="add_fridge"/>
+
+    <div class="row-fluid">
+        <c:if test="${success == true}">
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4><spring:message code="success"/></h4>
+                Ok there are  ${fn:length(hosts)}
+            </div>
+        </c:if>
+        <h1>Forecast</h1>
+        <c:import var="xml" url="http://weather.yahooapis.com/forecastrss?w=12591161"/>
+        <x:parse xml="${xml}" var="output"/>
+        <x:out select="$output/rss/channel/item/title" />
+        <br/> Temperature is:
+        <b><x:out select="$output/rss/channel/item/*/@temp" /></b> F
+    </div>
+</div>
